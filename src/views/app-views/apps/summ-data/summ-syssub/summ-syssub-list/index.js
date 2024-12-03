@@ -10,7 +10,7 @@ import { db } from 'configs/FirebaseConfig';
 import utils from 'utils'
  
 
-const SystemsubDrawingList = () => {
+const SummSystemSubList = () => {
 	const navigate = useNavigate();
 	const [list, setList] = useState()
 	const [selectedRows, setSelectedRows] = useState([])
@@ -184,4 +184,4 @@ const SystemsubDrawingList = () => {
 	)
 }
 
-export default SystemsubDrawingList
+export default SummSystemSubList

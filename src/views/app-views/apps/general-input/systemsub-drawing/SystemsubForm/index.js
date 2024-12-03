@@ -7,7 +7,7 @@ import { collection, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import SystemSubField from './SystemsubField';
 
-const DocengForm = ({ mode = 'ADD', param }) => {
+const SystemSubForm = ({ mode = 'ADD', param }) => {
   const [form] = Form.useForm();
   const [submitLoading, setSubmitLoading] = useState(false);
   const [uploadedFileURL, setUploadedFileURL] = useState(null);
@@ -22,7 +22,7 @@ const DocengForm = ({ mode = 'ADD', param }) => {
   useEffect(() => {
     if (mode === 'EDIT' && param?.id) {
       const fetchDocument = async () => {
-        const docRef = doc(db, 'engineeringDocs', param.id);
+        const docRef = doc(db, 'systemDrawing', param.id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const docData = docSnap.data();
@@ -30,7 +30,7 @@ const DocengForm = ({ mode = 'ADD', param }) => {
           setUploadedFileURL(docData.documentURL);
         } else {
           message.error('Document not found!');
-          navigate('/app/apps/documents/engineering-doc/doc-eng-list');
+          navigate('/app/apps/general-input/systemsub-drawing/systemsub-drawing-list');
         }
       };
       fetchDocument();
@@ -53,19 +53,19 @@ const DocengForm = ({ mode = 'ADD', param }) => {
       };
 
       if (mode === 'ADD') {
-        await addDoc(collection(db, 'engineeringDocs'), {
+        await addDoc(collection(db, 'systemDrawing'), {
           ...docData,
           createdAt: new Date(),
         });
         message.success('Document successfully added to Engineering Docs');
       } else {
-        const docRef = doc(db, 'engineeringDocs', param.id);
+        const docRef = doc(db, 'systemDrawing', param.id);
         await updateDoc(docRef, docData);
         message.success('Document successfully updated');
       }
 
       form.resetFields();
-      navigate(`/app/apps/documents/engineering-doc/doc-eng-list`);
+      navigate(`/app/apps/general-input/systemsub-drawing/systemsub-drawing-list`);
     } catch (error) {
       message.error(`Error: ${error.message}`);
     } finally {
@@ -84,7 +84,7 @@ const DocengForm = ({ mode = 'ADD', param }) => {
         <PageHeaderAlt className="border-bottom">
           <div className="container">
             <Flex className="py-2" mobileFlex={false} justifyContent="space-between" alignItems="center">
-              <h2>{mode === 'ADD' ? 'Add New Engineering Doc' : 'Edit Engineering Doc'}</h2>
+              <h2>{mode === 'ADD' ? 'Add System / Subsystem Drawing' : 'Edit System / Subsystem Drawing'}</h2>
               <div>
                 <Button onClick={() => form.resetFields()} className="mr-2">
                   Discard
@@ -119,4 +119,4 @@ const DocengForm = ({ mode = 'ADD', param }) => {
   );
 };
 
-export default DocengForm;
+export default SystemSubForm;

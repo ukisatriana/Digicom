@@ -108,16 +108,6 @@ const CommDeffList = () => {
 			sorter: (a, b) => utils.antdTableSorter(a, b, "commSysDeffName"),
 			// render: (text) => <span style={{ fontStyle: "italic" }}>{text}</span>,
 		  },
-		//   {
-		// 	title: "Comm SubSystem Deff Number",
-		// 	dataIndex: "comSysDeffSubNo",
-		// 	sorter: (a, b) => utils.antdTableSorter(a, b, "comSysDeffSubNo"),
-		// 	render: (text) => (
-		// 	  <span style={{ background: "#f5f5f5", padding: "2px 6px", borderRadius: "4px" }}>
-		// 		{text}
-		// 	  </span>
-		// 	),
-		//   },
 		{
 			title: "Comm SubSystem Deff",
 			dataIndex: "commSysDeffSub",

@@ -68,6 +68,23 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/general-input/systemsub-drawing/systemsub-drawing-list`,
         component: React.lazy(() => import('views/app-views/apps/general-input/systemsub-drawing/systemsub-drawing-list')),
     },
+    {
+        key: 'comm.system.subsystem.data.add',
+        path: `${APP_PREFIX_PATH}/apps/general-input/systemsub-drawing/systemsub-drawing-add`,
+        component: React.lazy(() => import('views/app-views/apps/general-input/systemsub-drawing/systemsub-drawing-add')),
+    },
+    {
+        key: 'comm.system.subsystem.data.edit',
+        path: `${APP_PREFIX_PATH}/apps/general-input/systemsub-drawing/systemsub-drawing-edit/:id`,
+        component: React.lazy(() => import('views/app-views/apps/general-input/systemsub-drawing/systemsub-drawing-edit')),
+    },
+
+    //Summary List
+    {
+        key: 'summ.system.subsystem.list.data',
+        path: `${APP_PREFIX_PATH}/apps/summ-data/summ-syssub/summ-syssub-list`,
+        component: React.lazy(() => import('views/app-views/apps/summ-data/summ-syssub/summ-syssub-list')),
+    },
 
 
     // Route Project Type

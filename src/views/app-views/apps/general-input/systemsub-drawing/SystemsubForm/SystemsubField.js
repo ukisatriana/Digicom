@@ -1,22 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Form, Input, Upload, message, Select } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { storage } from 'configs/FirebaseConfig'; // Adjust this path
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import FirestoreService from 'services/FirestoreService';
 
 const { Dragger } = Upload;
 const { Option } = Select;
 
-const projectList = ['Cijurai', 'Harbour Road', 'Cipali', 'Pik'];
+// const projectList = ['Cijurai', 'Harbour Road', 'Cipali', 'Pik'];
 
 const SystemSubField = ({ handleFileUpload }) => {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [commSysDeff, setCommSysDeffNo] = useState([]); // Untuk menyimpan data projectType
+  const [loading, setLoading] = useState(false); // Untuk menandakan data sedang dimuat
+  const [values, setValues] = useState('');
+
+  useEffect(() => {
+    const fetchProjectTypes = async () => {
+      setLoading(true);
+      try {
+      const types = await FirestoreService.getDocuments("commSysDeff"); // Asumsikan FirestoreService bekerja
+      if (Array.isArray(types)) {
+        setCommSysDeffNo(types);
+        // console.log("Comm System Deff: ", types);
+      } else {
+        console.error("Invalid data format: ", types);
+      }
+      } catch (error) {
+      console.error("Error fetching project types:", error);
+      } finally {
+      setLoading(false);
+      }
+    };
+    
+    fetchProjectTypes();
+    }, []);
+
+    const handleProjectChange = (value, fieldName) => {
+      setValues({
+        ...values,
+        [fieldName]: value,
+      });
+    };
 
   const handleUploadChange = async ({ file }) => {
     if (!file) return;
 
-    const storageRef = ref(storage, `documents/doceng/${file.name}`);
+    const storageRef = ref(storage, `systemSubsystem/drawing/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     setUploadLoading(true); // Start loading animation
@@ -45,30 +77,46 @@ const SystemSubField = ({ handleFileUpload }) => {
     <Row gutter={16}>
       <Col xs={24} sm={24} md={17}>
         <Card title="Basic Info">
+
+        <Form.Item
+				name="commSysDeffNo"
+				label="Comm System Deff No"
+				// rules={rules.projectTypeName}
+				>
+				<Select
+					className="w-100"
+					placeholder="Select Comm System Deff No"
+					value={values.commSysDeffNo || undefined} // Gunakan undefined agar placeholder muncul
+					onChange={(value) => handleProjectChange(value, "commSysDeffNo")}
+				>
+					{commSysDeff.map((type) => (
+					<Option key={type.id} value={type.commSysDeffNo}>
+						{type.commSysDeffNo}
+					</Option>
+					))}
+				</Select>
+		</Form.Item>
+
           <Form.Item
-            name="engineeringDocsName"
-            label="Engineering Docs Name"
-            rules={[{ required: true, message: 'Please enter Engineering Docs name' }]}
+            name="drawingCodeNumber"
+            label="Drawing Code Number"
+            rules={[{ required: true, message: 'Please enter Drawing Code Number' }]}
           >
-            <Input placeholder="Engineering Docs Name" />
+            <Input placeholder="Drawing Code Number" />
           </Form.Item>
+
           <Form.Item
-            name="projectName"
-            label="Project Name"
-            rules={[{ required: true, message: 'Please select a project name' }]}
+            name="drawingCodeName"
+            label="Drawing Code Name"
+            rules={[{ required: true, message: 'Please enter Drawing Coode Name' }]}
           >
-            <Select placeholder="Select Project">
-              {projectList.map((project) => (
-                <Option key={project} value={project}>
-                  {project}
-                </Option>
-              ))}
-            </Select>
+            <Input placeholder="Drawing Code Name" />
           </Form.Item>
+         
         </Card>
       </Col>
       <Col xs={24} sm={24} md={7}>
-        <Card title="Document">
+        <Card title="Document Drawing Code">
           <Dragger beforeUpload={() => false} onChange={handleUploadChange}>
             {uploadLoading ? (
               <div style={{ textAlign: 'center' }}>

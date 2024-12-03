@@ -1,6 +1,6 @@
 import { PieChartOutlined 
   , DatabaseOutlined
-  , SnippetsOutlined
+  // , SnippetsOutlined
   , ApiOutlined
   , ControlOutlined
   , BorderlessTableOutlined
@@ -64,45 +64,65 @@ const maindNavTree = [{
   ]
 }]
 
+//Project Data
+const summaryListNavTree = [{
+  key: 'main',
+  path: `${APP_PREFIX_PATH}/apps/summ-data`,
+  title: 'sidenav.summ.list.systemSub',
+  icon: PieChartOutlined,
+  breadcrumb: false,
+  isGroupTitle: true,
+  submenu: [
+    {
+      key: 'summ-system-subsystem-data',
+      path: `${APP_PREFIX_PATH}/apps/summ-data/summ-syssub-list`,
+      title: 'sidenav.summ.list.systemSub.sub',
+      icon:  DatabaseOutlined,
+      breadcrumb: false,
+      submenu: []
+    }
+  ]
+}]
+
 
 // Cons Completion
-const consCompletionNavTree = [{
-  key: 'cons-completion',
-  path: `${APP_PREFIX_PATH}/apps/cons-completion`,
-  title: 'sidenav.cons.completion',
-  icon: PieChartOutlined,
-  breadcrumb: false,
-  isGroupTitle: true,
-  submenu: [
-    {
-      key: 'cc-data',
-      path: `${APP_PREFIX_PATH}/apps/project`,
-      title: 'sidenav.cons.docs.cc.checksheet',
-      icon:  SnippetsOutlined ,
-      breadcrumb: false,
-      submenu: []
-    }
-  ]
-}]
+// const consCompletionNavTree = [{
+//   key: 'cons-completion',
+//   path: `${APP_PREFIX_PATH}/apps/cons-completion`,
+//   title: 'sidenav.cons.completion',
+//   icon: PieChartOutlined,
+//   breadcrumb: false,
+//   isGroupTitle: true,
+//   submenu: [
+//     {
+//       key: 'cc-data',
+//       path: `${APP_PREFIX_PATH}/apps/project`,
+//       title: 'sidenav.cons.docs.cc.checksheet',
+//       icon:  SnippetsOutlined ,
+//       breadcrumb: false,
+//       submenu: []
+//     }
+//   ]
+// }]
 
-const preCommNavTree = [{
-  key: 'pre-comm',
-  path: `${APP_PREFIX_PATH}/apps/pre-comm`,
-  title: 'sidenav.pre.comm',
-  icon: PieChartOutlined,
-  breadcrumb: false,
-  isGroupTitle: true,
-  submenu: [
-    {
-      key: 'pre-com-data',
-      path: `${APP_PREFIX_PATH}/apps/pre-comm`,
-      title: 'sidenav.pre.comm.pc',
-      icon:  SnippetsOutlined,
-      breadcrumb: false,
-      submenu: []
-    }
-  ]
-}]
+// const preCommNavTree = [{
+//   key: 'pre-comm',
+//   path: `${APP_PREFIX_PATH}/apps/pre-comm`,
+//   title: 'sidenav.pre.comm',
+//   icon: PieChartOutlined,
+//   breadcrumb: false,
+//   isGroupTitle: true,
+//   submenu: [
+//     {
+//       key: 'pre-com-data',
+//       path: `${APP_PREFIX_PATH}/apps/pre-comm`,
+//       title: 'sidenav.pre.comm.pc',
+//       icon:  SnippetsOutlined,
+//       breadcrumb: false,
+//       submenu: []
+//     }
+//   ]
+// }]
 
 // Comm Data 
 const commNavTree = [{
@@ -174,8 +194,9 @@ const inputOptionNavTree = [{
 const navigationConfig = [
   ...dashBoardNavTree
   , ...maindNavTree
-  , ...consCompletionNavTree
-  , ...preCommNavTree
+  , ...summaryListNavTree
+  // , ...consCompletionNavTree
+  // , ...preCommNavTree
   , ...commNavTree
   , ...inputOptionNavTree
 ]
