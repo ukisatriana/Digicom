@@ -104,7 +104,6 @@ export const protectedRoutes = [
     // },
 
     // identity
-
     {
         key: 'comm.acitvity.list',
         path: `${APP_PREFIX_PATH}/apps/ident-activity/ident-activity-list`,
@@ -121,6 +120,22 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/apps/ident-activity/ident-activity-edit')),
     },
 
+    // CommProcedure
+    {
+        key: 'comm.comm.procedure.list',
+        path: `${APP_PREFIX_PATH}/apps/comm-procedure/comm-procedure-list`,
+        component: React.lazy(() => import('views/app-views/apps/comm-procedure/comm-procedure-list')),
+    },
+    {
+        key: 'comm.comm.procedure.add',
+        path: `${APP_PREFIX_PATH}/apps/comm-procedure/comm-procedure-add`,
+        component: React.lazy(() => import('views/app-views/apps/comm-procedure/comm-procedure-add')),
+    },
+    {
+        key: 'comm.comm.procedure.edit',
+        path: `${APP_PREFIX_PATH}/apps/comm-procedure/comm-procedure-edit/:id`,
+        component: React.lazy(() => import('views/app-views/apps/comm-procedure/comm-procedure-edit')),
+    },
 
     // Route Project Type
     {
