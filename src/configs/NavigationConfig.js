@@ -5,6 +5,10 @@ import { PieChartOutlined
   , ControlOutlined
   , BorderlessTableOutlined
   , ApartmentOutlined
+  , UnorderedListOutlined
+  , FileTextOutlined
+  , ProfileOutlined
+  , DesktopOutlined
 } from '@ant-design/icons';
 import { APP_PREFIX_PATH } from 'configs/AppConfig'
 
@@ -49,7 +53,7 @@ const maindNavTree = [{
       key: 'comm-deff-data',
       path: `${APP_PREFIX_PATH}/apps/general-input/comm-deff/comm-deff-list`,
       title: 'sidenav.sheet.comm.deff',
-      icon:  DatabaseOutlined,
+      icon:  UnorderedListOutlined,
       breadcrumb: false,
       submenu: []
     },
@@ -57,32 +61,43 @@ const maindNavTree = [{
       key: 'system-subsystem-data',
       path: `${APP_PREFIX_PATH}/apps/general-input/systemsub-drawing/systemsub-drawing-list`,
       title: 'sidenav.sheet.comm.drawing',
-      icon:  DatabaseOutlined,
+      icon:  FileTextOutlined,
       breadcrumb: false,
       submenu: []
     }
   ]
 }]
 
-//Project Data
-const summaryListNavTree = [{
-  key: 'main',
-  path: `${APP_PREFIX_PATH}/apps/summ-data`,
+const summNavTree = [{
+  key: 'summ-data',
+  path: `${APP_PREFIX_PATH}/apps/sum-data`,
   title: 'sidenav.summ.list.systemSub',
   icon: PieChartOutlined,
   breadcrumb: false,
   isGroupTitle: true,
   submenu: [
+    
     {
-      key: 'summ-system-subsystem-data',
-      path: `${APP_PREFIX_PATH}/apps/summ-data/summ-syssub-list`,
+      key: 'summ-syssub-data',
+      path: `${APP_PREFIX_PATH}/apps/summ-data/summ-syssub/summ-syssub-list`,
       title: 'sidenav.summ.list.systemSub.sub',
-      icon:  DatabaseOutlined,
+      icon:  ProfileOutlined,
+      breadcrumb: false,
+      submenu: []
+    },
+    {
+      key: 'identify-activiti-data',
+      path: `${APP_PREFIX_PATH}/apps/ident-activity/ident-activity-list`,
+      title: 'sidenav.iden.activity',
+      icon:  DesktopOutlined,
       breadcrumb: false,
       submenu: []
     }
+
   ]
 }]
+
+
 
 
 // Cons Completion
@@ -127,7 +142,7 @@ const summaryListNavTree = [{
 // Comm Data 
 const commNavTree = [{
   key: 'comm',
-  path: `${APP_PREFIX_PATH}/apps/pre-comm`,
+  path: `${APP_PREFIX_PATH}/apps/comm-procedure`,
   title: 'sidenav.comm',
   icon: PieChartOutlined,
   breadcrumb: false,
@@ -135,7 +150,7 @@ const commNavTree = [{
   submenu: [
     {
       key: 'commm.data',
-      path: `${APP_PREFIX_PATH}/apps/pre-comm`,
+      path: `${APP_PREFIX_PATH}/apps/comm-procedure/comm-procedure-list`,
       title: 'sidenav.comm.data',
       icon:  DatabaseOutlined,
       breadcrumb: false,
@@ -194,7 +209,7 @@ const inputOptionNavTree = [{
 const navigationConfig = [
   ...dashBoardNavTree
   , ...maindNavTree
-  , ...summaryListNavTree
+  , ...summNavTree
   // , ...consCompletionNavTree
   // , ...preCommNavTree
   , ...commNavTree

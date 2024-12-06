@@ -5,11 +5,12 @@ import EllipsisDropdown from 'components/shared-components/EllipsisDropdown';
 import Flex from 'components/shared-components/Flex'
 import { useNavigate } from "react-router-dom";
 import FirestoreService from 'services/FirestoreService';
+import { doc, deleteDoc } from 'firebase/firestore';
+import { db } from 'configs/FirebaseConfig';
 import utils from 'utils'
  
-const { confirm } = Modal;
 
-const SummSyssubList = () => {
+const IdentActivityList = () => {
 	const navigate = useNavigate();
 	const [list, setList] = useState()
 	const [selectedRows, setSelectedRows] = useState([])
@@ -18,9 +19,8 @@ const SummSyssubList = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const documents = await FirestoreService.getDocuments('sumSysSub');
+				const documents = await FirestoreService.getDocuments('identActivity');
 				setList(documents);
-				console.log('asd', documents)
 			} catch (error) {
 				console.log('Error fetching documents: ', error.message);
 			}
@@ -54,32 +54,43 @@ const SummSyssubList = () => {
       },
     ];
 	
-	const addSummSyssub = () => {
-		navigate(`/app/apps/summ-data/summ-syssub/summ-syssub-add`)
+	const addDoceng = () => {
+		navigate(`/app/apps/ident-activity/ident-activity-add`)
 	}
 	
 	const viewDetails = row => {
-		navigate(`/app/apps/summ-data/summ-syssub/summ-syssub-edit/${row.id}`)
+		navigate(`/app/apps/ident-activity/ident-activity-edit/${row.id}`)
 	}
 	
 	const deleteRow = async (row) => {
-		confirm({
-		  title: 'Are you sure you want to delete this data?',
-		  content: 'This action cannot be undone.',
-		  okText: 'Yes, delete it',
-		  okType: 'danger',
-		  cancelText: 'No, cancel',
+		Modal.confirm({
+		  title: 'Apakah anda yakin ingin menghapus dokumen ini ?',
+		  content: 'data yang dihapus tidak dapat dikembalikan',
 		  onOk: async () => {
 			try {
-			  await FirestoreService.deleteDocument('sumSysSub', row.id);
-			  message.success('Data deleted successfully');
-			  setList((prevList) => prevList.filter((item) => item.id !== row.id));
+			  // Delete the document from Firestore
+			  await deleteDoc(doc(db, 'identActivity', row.id));
+	  
+			  // Update the local list
+			  const objKey = 'id';
+			  let data = list;
+			  if (selectedRows.length > 1) {
+				selectedRows.forEach((elm) => {
+				  data = utils.deleteArrayRow(data, objKey, elm.id);
+				});
+				setSelectedRows([]);
+			  } else {
+				data = utils.deleteArrayRow(data, objKey, row.id);
+			  }
+			  setList(data);
+	  
+			  message.success('Document deleted successfully.');
 			} catch (error) {
-			  message.error('Error deleting Data: ' + error.message);
+			  message.error(`Error deleting document: ${error.message}`);
 			}
 		  },
-		  onCancel() {
-			console.log('Delete action canceled');
+		  onCancel: () => {
+			message.info('Deletion cancelled.');
 		  },
 		});
 	  };
@@ -146,7 +157,7 @@ const SummSyssubList = () => {
 					</div>
 				</Flex>
 				<div>
-					<Button onClick={addSummSyssub} type="primary" icon={<PlusCircleOutlined />} block>Add System/SubSystem Drawing</Button>
+					<Button onClick={addDoceng} type="primary" icon={<PlusCircleOutlined />} block>Add Identification List</Button>
 				</div>
 			</Flex>
 			<div className="table-responsive">
@@ -166,4 +177,4 @@ const SummSyssubList = () => {
 	)
 }
 
-export default SummSyssubList
+export default IdentActivityList

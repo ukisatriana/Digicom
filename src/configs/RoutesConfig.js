@@ -73,17 +73,52 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/general-input/systemsub-drawing/systemsub-drawing-add`,
         component: React.lazy(() => import('views/app-views/apps/general-input/systemsub-drawing/systemsub-drawing-add')),
     },
-    {
-        key: 'comm.system.subsystem.data.edit',
-        path: `${APP_PREFIX_PATH}/apps/general-input/systemsub-drawing/systemsub-drawing-edit/:id`,
-        component: React.lazy(() => import('views/app-views/apps/general-input/systemsub-drawing/systemsub-drawing-edit')),
-    },
+    // {
+    //     key: 'comm.system.subsystem.data',
+    //     path: `${APP_PREFIX_PATH}/apps/general-input/systemsub-drawing/systemsub-drawing-list-detail`,
+    //     component: React.lazy(() => import('views/app-views/apps/general-input/systemsub-drawing/systemsub-drawing-list-detail')),
+    // },
+    
 
-    //Summary List
+    // Summ System/Subsystem
+
     {
-        key: 'summ.system.subsystem.list.data',
+        key: 'comm.system.subsystem.data',
         path: `${APP_PREFIX_PATH}/apps/summ-data/summ-syssub/summ-syssub-list`,
         component: React.lazy(() => import('views/app-views/apps/summ-data/summ-syssub/summ-syssub-list')),
+    },
+    {
+        key: 'comm.system.subsystem.data.add',
+        path: `${APP_PREFIX_PATH}/apps/summ-data/summ-syssub/summ-syssub-add`,
+        component: React.lazy(() => import('views/app-views/apps/summ-data/summ-syssub/summ-syssub-add')),
+    },
+    {
+        key: 'comm.system.subsystem.data.edit',
+        path: `${APP_PREFIX_PATH}/apps/summ-data/summ-syssub/summ-syssub-edit/:id`,
+        component: React.lazy(() => import('views/app-views/apps/summ-data/summ-syssub/summ-syssub-edit')),
+    },
+    // {
+    //     key: 'comm.system.subsystem.data.detail',
+    //     path: `${APP_PREFIX_PATH}/apps/summ-data/summ-syssub/summ-syssub-edit/:id`,
+    //     component: React.lazy(() => import('views/app-views/apps/summ-data/summ-syssub/summ-syssub-edit')),
+    // },
+
+    // identity
+
+    {
+        key: 'comm.acitvity.list',
+        path: `${APP_PREFIX_PATH}/apps/ident-activity/ident-activity-list`,
+        component: React.lazy(() => import('views/app-views/apps/ident-activity/ident-activity-list')),
+    },
+    {
+        key: 'comm.acitvity.list.add',
+        path: `${APP_PREFIX_PATH}/apps/ident-activity/ident-activity-add`,
+        component: React.lazy(() => import('views/app-views/apps/ident-activity/ident-activity-add')),
+    },
+    {
+        key: 'comm.acitvity.list.edit',
+        path: `${APP_PREFIX_PATH}/apps/ident-activity/ident-activity-edit/:id`,
+        component: React.lazy(() => import('views/app-views/apps/ident-activity/ident-activity-edit')),
     },
 
 
