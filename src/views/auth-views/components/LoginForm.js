@@ -14,6 +14,9 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { motion } from "framer-motion"
 
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+
 export const LoginForm = props => {
 	
 	const navigate = useNavigate();
@@ -35,9 +38,28 @@ export const LoginForm = props => {
 
 	
 
-	const onLogin = values => {
-		showLoading()
-		signIn(values);
+	const onLogin = async values => {
+		showLoading();
+		const auth = getAuth();
+		const db = getFirestore();
+	
+		try {
+			const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+			const userId = userCredential.user.uid;
+	
+			// Ambil data pengguna dari Firestore
+			const userDoc = await getDoc(doc(db, "users", userId));
+			if (userDoc.exists()) {
+				const userData = userDoc.data();
+				console.log("User Role:", userData.role);
+				// Simpan role ke Redux atau state lainnya
+				signIn({ ...values, role: userData.role });
+			} else {
+				console.error("No such document!");
+			}
+		} catch (error) {
+			console.error("Error logging in user:", error);
+		}
 	};
 
 	
@@ -54,31 +76,7 @@ export const LoginForm = props => {
 		}
 	});
 	
-	// const renderOtherSignIn = (
-	// 	<div>
-	// 		<Divider>
-	// 			<span className="text-muted font-size-base font-weight-normal">or connect with</span>
-	// 		</Divider>
-	// 		<div className="d-flex justify-content-center">
-	// 			<Button 
-	// 				onClick={() => onGoogleLogin()} 
-	// 				className="mr-2" 
-	// 				disabled={loading} 
-	// 				icon={<CustomIcon svg={GoogleSVG}/>}
-	// 			>
-	// 				Google
-	// 			</Button>
-	// 			<Button 
-	// 				onClick={() => onFacebookLogin()} 
-	// 				icon={<CustomIcon svg={FacebookSVG}/>}
-	// 				disabled={loading} 
-	// 			>
-	// 				Facebook
-	// 			</Button>
-	// 		</div>
-	// 	</div>
-	// )
-
+	
 	return (
 		<>
 			<motion.div 
@@ -92,7 +90,6 @@ export const LoginForm = props => {
 			<Form 
 				layout="vertical" 
 				name="login-form" 
-				// initialValues={initialCredential}
 				onFinish={onLogin}
 			>
 				<Form.Item 
