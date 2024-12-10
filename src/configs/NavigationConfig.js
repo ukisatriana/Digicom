@@ -9,6 +9,7 @@ import { PieChartOutlined
   , FileTextOutlined
   , ProfileOutlined
   , DesktopOutlined
+  , UserOutlined
 } from '@ant-design/icons';
 import { APP_PREFIX_PATH } from 'configs/AppConfig'
 
@@ -205,6 +206,26 @@ const inputOptionNavTree = [{
   ]
 }]
 
+// Config User
+const configNavTree = [{
+  key: 'user-config',
+  path: `${APP_PREFIX_PATH}/apps/user-config`,
+  title: 'sidenav.config',
+  icon: PieChartOutlined,
+  breadcrumb: false,
+  isGroupTitle: true,
+  submenu: [
+    {
+      key: 'dashboards-default',
+      path: `${APP_PREFIX_PATH}/apps/user-config/user-config-list`,
+      title: 'sidenav.user.config',
+      icon: UserOutlined,
+      breadcrumb: false,
+      submenu: []
+    }
+  ]
+}]
+
 
 const navigationConfig = [
   ...dashBoardNavTree
@@ -214,6 +235,7 @@ const navigationConfig = [
   // , ...preCommNavTree
   , ...commNavTree
   , ...inputOptionNavTree
+  , ...configNavTree
 ]
 
 export default navigationConfig;
