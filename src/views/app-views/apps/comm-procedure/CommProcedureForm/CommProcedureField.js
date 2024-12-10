@@ -14,12 +14,12 @@ const CommProcedureField = ({ handleFileUpload }) => {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [projectName, setProjectName] = useState([]); // Untuk menyimpan data projectType
-  const [loading, setLoading] = useState(false); // Untuk menandakan data sedang dimuat
+  // const [loading, setLoading] = useState(false); // Untuk menandakan data sedang dimuat
   const [values, setValues] = useState('');
 
   useEffect(() => {
     const fetchProjectTypes = async () => {
-      setLoading(true);
+      setUploadLoading(true);
       try {
       const types = await FirestoreService.getDocuments("project"); // Asumsikan FirestoreService bekerja
       if (Array.isArray(types)) {
@@ -31,7 +31,7 @@ const CommProcedureField = ({ handleFileUpload }) => {
       } catch (error) {
       console.error("Error fetching project types:", error);
       } finally {
-      setLoading(false);
+        setUploadLoading(false);
       }
     };
     

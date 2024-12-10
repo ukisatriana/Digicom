@@ -10,7 +10,7 @@ import './lang'
 // import mockServer from './mock'
 import firebaseConfig from 'configs/FirebaseConfig';
 
-console.log('firebaseConf',firebaseConfig)
+// console.log('firebaseConf',firebaseConfig)
 
 const themes = {
   dark: `${process.env.PUBLIC_URL}/css/dark-theme.css`,
