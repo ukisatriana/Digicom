@@ -2,6 +2,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AUTH_TOKEN } from 'constants/AuthConstant';
 import FirebaseService from 'services/FirebaseService';
 import AuthService from 'services/AuthService';
+import { auth, db } from 'configs/FirebaseConfig'; // Pastikan Firebase terhubung di sini
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { getDoc } from 'firebase/firestore';
 
 export const initialState = {
 	loading: false,
@@ -11,29 +15,52 @@ export const initialState = {
 	token: localStorage.getItem(AUTH_TOKEN) || null
 }
 
-export const signIn = createAsyncThunk('auth/login',async (data, { rejectWithValue }) => {
-	const { email, password } = data
+export const signIn = createAsyncThunk('auth/login', async (data, { rejectWithValue }) => {
+	const { email, password } = data;
 	try {
-		const response = await AuthService.login({email, password})
-		const token = response.data.token;
-		localStorage.setItem(AUTH_TOKEN, token);
-		return token;
-	} catch (err) {
-		return rejectWithValue(err.response?.data?.message || 'Error')
-	}
-})
+		// Login dengan Firebase
+		const userCredential = await signInWithEmailAndPassword(auth, email, password);
+		const user = userCredential.user;
 
-export const signUp = createAsyncThunk('auth/register',async (data, { rejectWithValue }) => {
-	const { email, password } = data
-	try {
-		const response = await AuthService.register({email, password})
-		const token = response.data.token;
+		// Ambil role dari Firestore
+		const userDoc = await getDoc(doc(db, 'users', user.uid));
+		const userData = userDoc.data();
+
+		// Token diambil dari Firebase Auth
+		const token = await user.getIdToken();
+
+		// Simpan token ke localStorage
 		localStorage.setItem(AUTH_TOKEN, token);
-		return token;
+
+		return { token, role: userData.role }; // Kembalikan role
 	} catch (err) {
-		return rejectWithValue(err.response?.data?.message || 'Error')
+		return rejectWithValue(err.message || 'Error during login');
 	}
-})
+});
+
+export const signUp = createAsyncThunk('auth/register', async (data, { rejectWithValue }) => {
+	const { email, password, role } = data;
+	try {
+		// Buat akun baru di Firebase
+		const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+		const user = userCredential.user;
+
+		// Simpan role ke Firestore
+		await setDoc(doc(db, 'users', user.uid), {
+			email: user.email,
+			role: role, // Tambahkan role ke Firestore
+		});
+
+		// Token diambil dari Firebase Auth
+		const token = await user.getIdToken();
+
+		// Simpan token ke localStorage
+		localStorage.setItem(AUTH_TOKEN, token);
+		return { token, role };
+	} catch (err) {
+		return rejectWithValue(err.message || 'Error during registration');
+	}
+});
 
 export const signOut = createAsyncThunk('auth/logout',async () => {
     const response = await FirebaseService.signOutRequest()
@@ -101,9 +128,10 @@ export const authSlice = createSlice({
 				state.loading = true
 			})
 			.addCase(signIn.fulfilled, (state, action) => {
-				state.loading = false
-				state.redirect = '/'
-				state.token = action.payload
+				state.loading = false;
+				state.redirect = '/';
+				state.token = action.payload;
+				state.role = action.payload.role; // Simpan role
 			})
 			.addCase(signIn.rejected, (state, action) => {
 				state.message = action.payload
@@ -124,9 +152,10 @@ export const authSlice = createSlice({
 				state.loading = true
 			})
 			.addCase(signUp.fulfilled, (state, action) => {
-				state.loading = false
-				state.redirect = '/'
-				state.token = action.payload
+				state.loading = false;
+				state.redirect = '/';
+				state.token = action.payload;
+				state.role = action.payload.role; // Simpan role
 			})
 			.addCase(signUp.rejected, (state, action) => {
 				state.message = action.payload

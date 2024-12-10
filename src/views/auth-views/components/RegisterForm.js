@@ -1,10 +1,14 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Alert } from "antd";
+import { Button, Form, Input, Alert, Select } from "antd";
 import { signUp, showAuthMessage, showLoading, hideAuthMessage } from 'store/slices/authSlice';
 import { useNavigate } from 'react-router-dom'
 import { motion } from "framer-motion"
+import { getFirestore, doc, setDoc } from "firebase/firestore"; 
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+const { Option } = Select;
 
 const rules = {
 	email: [
@@ -23,6 +27,18 @@ const rules = {
 			message: 'Please input your password'
 		}
 	],
+	usernameR: [
+		{ 
+			required: true,
+			message: 'Please input your username'
+		}
+	],
+	projectNameR: [
+		{ 
+			required: true,
+			message: 'Please input your project name'
+		}
+	],
 	confirm: [
 		{ 
 			required: true,
@@ -38,6 +54,34 @@ const rules = {
 		})
 	]
 }
+
+
+const onSignUp = async () => {
+    Form.validateFields().then(async values => {
+        showLoading();
+        const auth = getAuth();
+        const db = getFirestore();
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+            const userId = userCredential.user.uid;
+
+            // Simpan data pengguna ke Firestore
+            await setDoc(doc(db, "users", userId), {
+                email: values.email,
+                role: values.role,
+                username: values.username,
+                projectName: values.projectName
+            });
+
+            signUp(values); // Tindakan tambahan jika diperlukan
+        } catch (error) {
+            console.error("Error registering user:", error);
+        }
+    });
+};
+
+const selectRole =[ 'admin', 'user', 'owner', 'contractor', 'subcon' ]
 
 export const RegisterForm = (props) => {
 
@@ -78,6 +122,25 @@ export const RegisterForm = (props) => {
 				<Alert type="error" showIcon message={message}></Alert>
 			</motion.div>
 			<Form form={form} layout="vertical" name="register-form" onFinish={onSignUp}>
+				
+
+				<Form.Item 
+					name="username" 
+					label="Nama Personel" 
+					rules={rules.usernameR}
+					hasFeedback
+				>
+					<Input placeholder='input username' />
+				</Form.Item>
+				<Form.Item 
+					name="projectName" 
+					label="Project Name" 
+					rules={rules.projectNameR}
+					hasFeedback
+				>
+					<Input placeholder='Input Project Name'/>
+				</Form.Item>
+				
 				<Form.Item 
 					name="email" 
 					label="Email" 
@@ -102,6 +165,26 @@ export const RegisterForm = (props) => {
 				>
 					<Input.Password prefix={<LockOutlined className="text-primary" />}/>
 				</Form.Item>
+
+				<Form.Item
+					name="role"
+					label="Role"
+					rules={[
+						{
+							required: true,
+							message: 'Please select your role'
+						}
+					]}
+				>
+					<Select placeholder="Select your role">
+						{selectRole.map((role, index) => (
+							<Option key={index} value={role}>{role}</Option>
+						))}
+					</Select>
+				</Form.Item>
+
+
+
 				<Form.Item>
 					<Button type="primary" htmlType="submit" block loading={loading}>
 						Sign Up
