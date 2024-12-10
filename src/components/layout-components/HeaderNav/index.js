@@ -17,7 +17,7 @@ import utils from 'utils'
 export const HeaderNav = props => {
 
 	const { isMobile } = props;
-
+// eslint-disable-next-line no-unused-vars
 	const [searchActive, setSearchActive] = useState(false);
 
 	const dispatch = useDispatch()

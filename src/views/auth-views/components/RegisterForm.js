@@ -44,7 +44,7 @@ const rules = {
 	]
 }
 
-
+// eslint-disable-next-line no-unused-vars
 const onSignUp = async () => {
     Form.validateFields().then(async values => {
         showLoading();

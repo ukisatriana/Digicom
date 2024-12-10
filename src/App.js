@@ -8,6 +8,8 @@ import Layouts from './layouts'
 import { THEME_CONFIG } from './configs/AppConfig';
 import './lang'
 // import mockServer from './mock'
+
+// eslint-disable-next-line no-unused-vars
 import firebaseConfig from 'configs/FirebaseConfig';
 
 // console.log('firebaseConf',firebaseConfig)

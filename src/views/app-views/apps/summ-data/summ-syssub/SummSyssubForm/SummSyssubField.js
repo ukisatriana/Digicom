@@ -22,6 +22,7 @@ const rules = {
 
 const SummSyssubField = () => {
 
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false); // Untuk menandakan data sedang dimuat
   const [values, setValues] = useState('');
   const [commSysDeff, setCommSysDeffNo] = useState([]); // Untuk menyimpan data projectType
