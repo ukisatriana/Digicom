@@ -1,21 +1,41 @@
+
+
 name: Deploy to Firebase Hosting on merge
+
 on:
   push:
     branches:
       - main
+
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - run: npm install && npm run build
-      - run: npx update-browserslist-db@latest
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CCMS_WIKA }}
-          channelId: live
-          projectId: ccms-wika
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Update caniuse-lite database
+      run: npx update-browserslist-db@latest
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run build
+      run: npm run build
+
+    - name: Install Firebase CLI
+      run: npm install -g firebase-tools
+
+    - name: Deploy to Firebase
+      run: firebase deploy --only hosting
+      env:
+        repoToken: ${{ secrets.GITHUB_TOKEN }}
+        firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CCMS_WIKA }}
+        channelId: live
+        projectId: ccms-wika
