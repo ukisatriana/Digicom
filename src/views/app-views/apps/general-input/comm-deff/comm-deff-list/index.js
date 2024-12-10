@@ -116,7 +116,6 @@ const CommDeffList = () => {
 				<ul
 				  style={{
 					margin: 0,
-					padding: 0,
 					listStyle: "none",
 					background: "#f9f9f9",
 					border: "1px solid #e8e8e8",
