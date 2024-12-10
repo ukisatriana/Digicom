@@ -27,18 +27,7 @@ const rules = {
 			message: 'Please input your password'
 		}
 	],
-	usernameR: [
-		{ 
-			required: true,
-			message: 'Please input your username'
-		}
-	],
-	projectNameR: [
-		{ 
-			required: true,
-			message: 'Please input your project name'
-		}
-	],
+	
 	confirm: [
 		{ 
 			required: true,
@@ -127,7 +116,7 @@ export const RegisterForm = (props) => {
 				<Form.Item 
 					name="username" 
 					label="Nama Personel" 
-					rules={rules.usernameR}
+					// rules={rules.username}
 					hasFeedback
 				>
 					<Input placeholder='input username' />
@@ -135,7 +124,7 @@ export const RegisterForm = (props) => {
 				<Form.Item 
 					name="projectName" 
 					label="Project Name" 
-					rules={rules.projectNameR}
+					// rules={rules.projectName}
 					hasFeedback
 				>
 					<Input placeholder='Input Project Name'/>
