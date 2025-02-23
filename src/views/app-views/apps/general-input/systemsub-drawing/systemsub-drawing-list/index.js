@@ -103,9 +103,14 @@ const SystemsubDrawingList = () => {
 
 		},
 		{
-			title: 'Comm System Deff No',
+			title: 'System Definition Number',
 			dataIndex: 'commSysDeffNo',
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'commSysDeffNo')
+		},
+		{
+			title: 'SubSystem Definition Number',
+			dataIndex: 'commSysDeffSubNo',
+			sorter: (a, b) => utils.antdTableSorter(a, b, 'commSysDeffSubNo')
 		},
 		{
 			title: 'Drawing Code',
@@ -117,6 +122,7 @@ const SystemsubDrawingList = () => {
 			dataIndex: 'drawingCodeName',
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'drawingCodeName')
 		},
+		
 		{
 			title: 'File Doc',
 			dataIndex: 'documentURL',

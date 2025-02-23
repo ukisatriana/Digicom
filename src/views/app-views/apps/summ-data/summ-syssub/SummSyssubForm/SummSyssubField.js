@@ -27,24 +27,8 @@ const SummSyssubField = () => {
   const [values, setValues] = useState('');
   const [commSysDeff, setCommSysDeffNo] = useState([]); // Untuk menyimpan data projectType
   const [commSysDeffSub, setCommSysDeffSubNo] = useState([]); // Untuk menyimpan data projectType
+  const [documentReferences, setDocumentReferences] = useState([]);
 
-	// const initialValues = {
-	// 	commSysDeffName: '',
-  //       commSysDeffNo: '',
-  //       commSysDeffSubNo: '',
-  //       commSysDeffSubName: '',
-  //       summSub:[
-  //           {
-	// 			pipingLineNo: '',
-  //               equipmentStatic: '',
-  //               equipmentRotary: '',
-  //               equipmentPackage: '',
-  //               instTagNo: '',
-  //               elecEq: '',
-  //               elecCableNo: ''
-	// 		}
-  //       ],
-	// }
 
   useEffect(() => {
     const fetchProjectTypes = async () => {
@@ -65,6 +49,27 @@ const SummSyssubField = () => {
   
     fetchProjectTypes();
   }, []);
+
+  useEffect(() => {
+    const fetchDocumentReferences = async () => {
+      setLoading(true);
+      try {
+        const docs = await FirestoreService.getDocuments("systemDrawing");
+        if (Array.isArray(docs)) {
+          setDocumentReferences(docs);
+        } else {
+          console.error("Invalid data format:", docs);
+        }
+      } catch (error) {
+        console.error("Error fetching document references:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchDocumentReferences();
+  }, []);
+  
 
     const handleProjectChange = (value, fieldName) => {
       setValues({
@@ -151,6 +156,24 @@ const SummSyssubField = () => {
               onChange={(e) => handleProjectChange(e)}
             />
           </Form.Item>
+          <Form.Item
+              name="documentReference"
+              label="Document Reference"
+              rules={[{ required: true, message: "Please select a Document Reference" }]}
+            >
+              <Select
+                className="w-100"
+                placeholder="Select Document Reference"
+                value={values.documentReference || undefined}
+                onChange={(value) => handleProjectChange(value, "documentReference")}
+              >
+                {documentReferences.map((doc) => (
+                  <Option key={doc.id} value={doc.documentURL}>
+                    {doc.drawingCodeName} {/* Menampilkan drawingCodeName */}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
         </Card>
       </Col>
 
@@ -243,7 +266,17 @@ const SummSyssubField = () => {
                           <Input />
                         </Form.Item>
                       </Col>
-
+                      <Col sm={24} md={5}>
+                        <Form.Item
+                          {...field}
+                          label="Safety Equipment"
+                          name={[field.name, "safetyEqipment"]}
+                          onChange={(e) => handleProjectChange(e)}
+                          className="w-100"
+                        >
+                          <Input />
+                        </Form.Item>
+                      </Col>
                       <Col sm={24} md={2}>
                         <MinusCircleOutlined
                           className="mt-md-4 pt-md-3"

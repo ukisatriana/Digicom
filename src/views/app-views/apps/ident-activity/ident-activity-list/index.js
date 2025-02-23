@@ -123,6 +123,18 @@ const IdentActivityList = () => {
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'commSysDeffSubNo')
 		},
 		{
+			title: 'Document Reference',
+			dataIndex: 'documentReference',
+
+			render: (url) => (
+				<a href={url} target="_blank" rel="noopener noreferrer" download>
+				  View File
+				</a>
+			  ),
+			
+			sorter: (a, b) => utils.antdTableSorter(a, b, 'documentReference')
+		},
+		{
 			title: '',
 			dataIndex: 'actions',
 			render: (_, elm) => (

@@ -14,36 +14,46 @@ const SystemSubField = ({ handleFileUpload }) => {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [commSysDeff, setCommSysDeffNo] = useState([]); // Untuk menyimpan data projectType
-  // const [loading, setLoading] = useState(false); // Untuk menandakan data sedang dimuat
+  const [commSysDeffSub, setCommSysDeffSubNo] = useState([]); // Untuk menyimpan data projectType
+
+  const [loading, setLoading] = useState(false); // Untuk menandakan data sedang dimuat
   const [values, setValues] = useState('');
 
   useEffect(() => {
-    const fetchProjectTypes = async () => {
-      setUploadLoading(true);
-      try {
-      const types = await FirestoreService.getDocuments("commSysDeff"); // Asumsikan FirestoreService bekerja
-      if (Array.isArray(types)) {
-        setCommSysDeffNo(types);
-        // console.log("Comm System Deff: ", types);
-      } else {
-        console.error("Invalid data format: ", types);
-      }
-      } catch (error) {
-      console.error("Error fetching project types:", error);
-      } finally {
-        setUploadLoading(false);
-      }
-    };
-    
-    fetchProjectTypes();
-    }, []);
+     const fetchProjectTypes = async () => {
+       setLoading(true);
+       try {
+         const types = await FirestoreService.getDocuments("commSysDeff");
+         if (Array.isArray(types)) {
+           setCommSysDeffNo(types);
+         } else {
+           console.error("Invalid data format:", types);
+         }
+       } catch (error) {
+         console.error("Error fetching project types:", error);
+       } finally {
+         setLoading(false);
+       }
+     };
+   
+     fetchProjectTypes();
+   }, []);
+ 
+   const handleProjectChange = (value, fieldName) => {
+    setValues({
+      ...values,
+      [fieldName]: value,
+    });
+  
+    if (fieldName === "commSysDeffNo") {
+      const selectedSystem = commSysDeff.find(
+        (system) => system.commSysDeffNo === value
+      );
+      setCommSysDeffSubNo(selectedSystem?.commSysDeffSub || []);
+    }
+  };
 
-    const handleProjectChange = (value, fieldName) => {
-      setValues({
-        ...values,
-        [fieldName]: value,
-      });
-    };
+    
 
   const handleUploadChange = async ({ file }) => {
     if (!file) return;
@@ -80,10 +90,11 @@ const SystemSubField = ({ handleFileUpload }) => {
 
         <Form.Item
 				name="commSysDeffNo"
-				label="Comm System Deff No"
+				label="System Definition Number"
 				// rules={rules.projectTypeName}
 				>
 				<Select
+         loading={loading}
 					className="w-100"
 					placeholder="Select Comm System Deff No"
 					value={values.commSysDeffNo || undefined} // Gunakan undefined agar placeholder muncul
@@ -95,7 +106,30 @@ const SystemSubField = ({ handleFileUpload }) => {
 					</Option>
 					))}
 				</Select>
-		</Form.Item>
+		    </Form.Item>
+
+        <Form.Item
+                   name="commSysDeffSubNo"
+                   label="SubSystem Definition Number"
+                 >
+                   <Select
+                   loading={loading}
+                     className="w-100"
+                     placeholder="Select Comm System Deff Sub No"
+                     value={values.commSysDeffSubNo || undefined} // Gunakan undefined agar placeholder muncul
+                     onChange={(value) =>
+                       handleProjectChange(value, "commSysDeffSubNo")
+                     }
+                   >
+                     {commSysDeffSub.map((sub) => (
+                       <Option key={sub.id} value={sub.commSysDeffSubNo}>
+                         {sub.commSysDeffSubNo}
+                       </Option>
+                     ))}
+                   </Select>
+                 </Form.Item>
+
+    
 
           <Form.Item
             name="drawingCodeNumber"

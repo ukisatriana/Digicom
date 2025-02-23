@@ -24,6 +24,7 @@ const IdentActivityForm = props => {
         commSysDeffNo: '',
         commSysDeffSubNo: '',
         commSysDeffSubName: '',
+		drawingCodeName: '',
         identActivitySub:[
             {
 				tagNo: '',

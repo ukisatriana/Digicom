@@ -24,6 +24,7 @@ const SummSysSubForm = props => {
         commSysDeffNo: '',
         commSysDeffSubNo: '',
         commSysDeffSubName: '',
+        drawingCodeName: '',
         summSub:[
             {
 				pipingLineNo: '',
@@ -32,7 +33,8 @@ const SummSysSubForm = props => {
                 equipmentPackage: '',
                 instTagNo: '',
                 elecEq: '',
-                elecCableNo: ''
+                elecCableNo: '',
+                safetyEqipment: ''
 			}
         ],
 	}

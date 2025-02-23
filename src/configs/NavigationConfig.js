@@ -216,7 +216,7 @@ const configNavTree = [{
   isGroupTitle: true,
   submenu: [
     {
-      key: 'dashboards-default',
+      key: 'user-settings',
       path: `${APP_PREFIX_PATH}/apps/user-config/user-config-list`,
       title: 'sidenav.user.config',
       icon: UserOutlined,

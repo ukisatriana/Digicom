@@ -62,11 +62,11 @@ const CommDeffField = () => {
         <Card title="System">
           <Form.Item
             name="commSysDeffNo"
-            label="Commissioning System Definition Number"
+            label="System Definition Number"
             rules={rules.commDeffNoR}
           >
             <Input
-              placeholder="Enter Commissioning System Definition Number"
+              placeholder="Enter System Definition Number"
               type="text"
               value={values.commSysDeffNo}
               name="commSysDeffNo"
@@ -75,11 +75,11 @@ const CommDeffField = () => {
           </Form.Item>
           <Form.Item
             name="commSysDeffName"
-            label="Commissioning System Definition Name"
+            label="System Definition Name"
             rules={rules.commDeffNameR}
           >
             <Input
-              placeholder="Enter Commissioning System Definition Name"
+              placeholder="Enter System Definition Name"
               type="text"
               value={values.commSysDeffName}
               name="commSysDeffName"

@@ -95,7 +95,7 @@ const CommDeffList = () => {
 			),
 		  },
 		  {
-			title: "Comm System Deff No",
+			title: "System Definition Number",
 			dataIndex: "commSysDeffNo",
 			sorter: (a, b) => utils.antdTableSorter(a, b, "commSysDeffNo"),
 			// render: (text) => (
@@ -103,13 +103,13 @@ const CommDeffList = () => {
 			// ),
 		  },
 		  {
-			title: "Comm System Deff Name",
+			title: "System Definition Name",
 			dataIndex: "commSysDeffName",
 			sorter: (a, b) => utils.antdTableSorter(a, b, "commSysDeffName"),
 			// render: (text) => <span style={{ fontStyle: "italic" }}>{text}</span>,
 		  },
 		{
-			title: "Comm SubSystem Deff",
+			title: "SubSystem Definition Number",
 			dataIndex: "commSysDeffSub",
 			render: (sub) =>
 			  Array.isArray(sub) && sub.length > 0 ? (

@@ -20,7 +20,7 @@ const SummSyssubList = () => {
 			try {
 				const documents = await FirestoreService.getDocuments('sumSysSub');
 				setList(documents);
-				console.log('asd', documents)
+				// console.log('asd', documents)
 			} catch (error) {
 				console.log('Error fetching documents: ', error.message);
 			}
@@ -28,6 +28,8 @@ const SummSyssubList = () => {
 		fetchData();
 	}
 	, []);
+
+	
 
 	const dropdownMenu = row => [
         {
@@ -110,6 +112,18 @@ const SummSyssubList = () => {
 			title: 'Sub System Number',
 			dataIndex: 'commSysDeffSubNo',
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'commSysDeffSubNo')
+		},
+		{
+			title: 'Document Reference',
+			dataIndex: 'documentReference',
+
+			render: (url) => (
+				<a href={url} target="_blank" rel="noopener noreferrer" download>
+				  View File
+				</a>
+			  ),
+			
+			sorter: (a, b) => utils.antdTableSorter(a, b, 'documentReference')
 		},
 		{
 			title: '',

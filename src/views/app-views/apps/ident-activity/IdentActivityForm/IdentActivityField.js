@@ -34,26 +34,12 @@ const rules = {
 
 const IdentActivityField = () => {
 
-	// const initialValues = {
-	// 	commSysDeffName: '',
-  //       commSysDeffNo: '',
-  //       commSysDeffSubNo: '',
-  //       commSysDeffSubName: '',
-  //       identActivitySub:[
-  //           {
-	// 			tagNo: '',
-  //               itemDesc: '',
-  //               commActivities: '',
-  //               specProcedurReq: ''
-	// 		}
-  //       ],
-	// }
-
   // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false); // Untuk menandakan data sedang dimuat
   const [values, setValues] = useState('');
   const [commSysDeff, setCommSysDeffNo] = useState([]); // Untuk menyimpan data projectType
   const [commSysDeffSub, setCommSysDeffSubNo] = useState([]); // Untuk menyimpan data projectType
+  const [documentReferences, setDocumentReferences] = useState([]);
 
   useEffect(() => {
     const fetchProjectTypes = async () => {
@@ -74,6 +60,26 @@ const IdentActivityField = () => {
   
     fetchProjectTypes();
   }, []);
+
+  useEffect(() => {
+      const fetchDocumentReferences = async () => {
+        setLoading(true);
+        try {
+          const docs = await FirestoreService.getDocuments("systemDrawing");
+          if (Array.isArray(docs)) {
+            setDocumentReferences(docs);
+          } else {
+            console.error("Invalid data format:", docs);
+          }
+        } catch (error) {
+          console.error("Error fetching document references:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+    
+      fetchDocumentReferences();
+    }, []);
 
     const handleProjectChange = (value, fieldName) => {
       setValues({
@@ -162,6 +168,24 @@ const IdentActivityField = () => {
               onChange={(e) => handleProjectChange(e)}
             />
           </Form.Item>
+            <Form.Item
+                        name="documentReference"
+                        label="Document Reference"
+                        rules={[{ required: true, message: "Please select a Document Reference" }]}
+                      >
+                        <Select
+                          className="w-100"
+                          placeholder="Select Document Reference"
+                          value={values.documentReference || undefined}
+                          onChange={(value) => handleProjectChange(value, "documentReference")}
+                        >
+                          {documentReferences.map((doc) => (
+                            <Option key={doc.id} value={doc.documentURL}>
+                              {doc.drawingCodeName} {/* Menampilkan drawingCodeName */}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
         </Card>
       </Col>
 

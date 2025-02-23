@@ -80,8 +80,8 @@ export const NavProfile = ({mode}) => {
 				<Profile>
 					<Avatar src="/img/avatars/thumb-1.jpg" />
 					<UserInfo className="profile-text">
-						<Name>Charlie Howard</Name>
-						<Title>Frontend Developer</Title>
+						<Name>Admin</Name>
+						<Title>Operator</Title>
 					</UserInfo>
 				</Profile>
 			</NavItem>
